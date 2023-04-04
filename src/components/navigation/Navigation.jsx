@@ -1,45 +1,48 @@
-import { useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setTheme } from '../../slices/themeSlice';
+import { setPage } from '../../slices/pageSlice';
 import { Button } from '../UI/button/Button';
 import dark from '../../img/dark.svg';
 import light from '../../img/light1.svg';
 import style from './Navigation.module.css';
-import { CalculatorContext } from '../calculator/Calculator';
 
 export const Navigation = () => {
-  const ThemeContext = useContext(CalculatorContext);
+  const theme = useSelector((state) => state.theme.isLight);
+  const page = useSelector((state) => state.page.isCalculator);
+  const dispatch = useDispatch();
+
   const onButtonClick = (event) => {
     if (event.target.classList.contains('img')) {
-      ThemeContext.setIsLightTheme(!ThemeContext.isLightTheme);
+      dispatch(setTheme(!theme));
     } else if (
       event.target.classList.contains(style.navButton) ||
       event.target.classList.contains(style.darkMode)
     ) {
-      let target = event.target;
-      ThemeContext.setIsCalculatorPage(
-        target.value === 'Calculator' ? true : false
-      );
+      let value = event.target.value;
+      dispatch(setPage(value === 'Calculator' ? true : false));
     }
   };
+
   return (
     <div className={style.navigation} onClick={(event) => onButtonClick(event)}>
       <Button
-        classButton={`${
-          ThemeContext.isLightTheme ? style.navButton : style.darkMode
-        } ${ThemeContext.isCalculatorPage && style.active}`}
+        classButton={`${theme ? style.navButton : style.darkMode} ${
+          page && style.active
+        }`}
         value="Calculator"
       >
         Calculator
       </Button>
       <Button
-        classButton={`${
-          ThemeContext.isLightTheme ? style.navButton : style.darkMode
-        } ${!ThemeContext.isCalculatorPage && style.active}`}
+        classButton={`${theme ? style.navButton : style.darkMode} ${
+          !page && style.active
+        }`}
         value="Timer"
       >
         Timer
       </Button>
       <Button classButton={style.navImg}>
-        {ThemeContext.isLightTheme ? (
+        {theme ? (
           <img className="img" src={dark} alt="dark theme" />
         ) : (
           <img className="img" src={light} alt="light theme" />

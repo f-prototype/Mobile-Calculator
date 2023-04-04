@@ -1,19 +1,21 @@
 let data = new Date(2023, 0, 1, 0, 0, 0, 0);
-let timerId;
-export const onTimerButton = (event, playBtn, setPlayBtn, setTimerValue) => {
-  if (event.target.parentElement.value === 'play_stop') {
-    setPlayBtn(!playBtn);
-    if (event.target.alt === 'play') {
-      timerId = setInterval(() => update(setTimerValue), 1000);
-    } else {
-      stopTimer();
-    }
-  } else {
-    clearValueTimer(setTimerValue);
-  }
+export const onTimerButton = (event, playBtn, setPlayBtn) => {
+  // if (event.target.parentElement.value === 'play_stop') {
+  //   setPlayBtn(!playBtn);
+  //   if (event.target.alt === 'play') {
+  //     timerId = setInterval(() => {
+  //       update();
+  //       return obj;
+  //     }, 1000);
+  //   } else {
+  //     stopTimer();
+  //   }
+  // } else {
+  //   clearValueTimer();
+  // }
 };
 
-function update(setTimerValue) {
+export function update() {
   data.setSeconds(data.getSeconds() + 1);
 
   let hour = data.getHours();
@@ -31,20 +33,20 @@ function update(setTimerValue) {
     seconds = '0' + seconds;
   }
 
-  setTimerValue({ hour: hour, minutes: minutes, seconds: seconds });
+  return { hour: hour, minutes: minutes, seconds: seconds };
 }
 
-export function stopTimer() {
+export function stopTimer(timerId) {
   clearInterval(timerId);
   timerId = null;
 }
 
-export function clearValueTimer(setTimerValue) {
+export function clearValueTimer() {
   let hour = '00';
   data.setHours(0);
   let minutes = '00';
   data.setMinutes(0);
   let seconds = '00';
   data.setSeconds(0);
-  setTimerValue({ hour, minutes, seconds });
+  return { hour, minutes, seconds };
 }

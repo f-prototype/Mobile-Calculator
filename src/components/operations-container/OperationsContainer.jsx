@@ -1,7 +1,6 @@
-import { useContext } from 'react';
-import { CalculatorContext } from '../calculator/Calculator';
+import { useSelector } from 'react-redux';
 
 export const OperationsContainer = () => {
-  const Calculator = useContext(CalculatorContext);
-  return <div style={{ fontSize: '20px' }}>{Calculator.mathHistory}</div>;
+  const history = useSelector((state) => state.math.mathHistory);
+  return <div style={{ fontSize: '20px' }}>{history}</div>;
 };

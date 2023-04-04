@@ -1,13 +1,12 @@
-import { useContext } from 'react';
-import { CalculatorContext } from '../calculator/Calculator';
+import { useSelector } from 'react-redux/es/exports';
 import style from './TimerResult.module.css';
 
 export const TimerResult = () => {
-  const Context = useContext(CalculatorContext);
+  const timerValue = useSelector((state) => state.math.timerValue);
 
   return (
-    <div
-      className={style.container}
-    >{`${Context.timerValue.hour}:${Context.timerValue.minutes}:${Context.timerValue.seconds}`}</div>
+    <div className={style.container}>
+      {`${timerValue.hour}:${timerValue.minutes}:${timerValue.seconds}`}
+    </div>
   );
 };

@@ -1,7 +1,6 @@
-import { useContext } from 'react';
-import { CalculatorContext } from '../calculator/Calculator';
+import { useSelector } from 'react-redux';
 
 export const Result = () => {
-  const Calculator = useContext(CalculatorContext);
-  return <div>= {Calculator.result}</div>;
+  const result = useSelector((state) => state.math.result);
+  return <div>= {result}</div>;
 };

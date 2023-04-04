@@ -4,13 +4,12 @@ let currentNum = '';
 let prevNum = '';
 let selectedOperation = '';
 let prevOperation = '';
-export function CalculatorService(
-  value,
-  mathHistory,
-  setMathHistory,
-  result,
-  setResult
-) {
+export function CalculatorService(value, mathHistory, result) {
+  let resultObj = {
+    history: mathHistory,
+    result: result,
+  };
+
   const pressed = (value) => {
     if (result !== '') {
       if (value === 'C') {
@@ -21,7 +20,7 @@ export function CalculatorService(
     }
     if (value === '=') {
       calculate(prevOperation);
-      setResult(prevNum);
+      resultObj = { ...resultObj, result: prevNum };
     } else if (value === '%') percentage();
     else if (value === 'C') clear();
     else if (value === 'D') deleteValue();
@@ -30,14 +29,15 @@ export function CalculatorService(
   };
   // ОТРИСОВКА ВВЕДЕНЫХ ЧИСЕЛ
   const appendNumber = (value) => {
-    setMathHistory(mathHistory + value);
+    resultObj = { ...resultObj, history: resultObj.history + value };
+
     currentNum += value;
   };
   // ПОДГОТОВКА ОПЕРАЦИИ
   const applyOperation = (value) => {
     selectedOperation = value;
     calculate(prevOperation);
-    setMathHistory(mathHistory + value);
+    resultObj = { ...resultObj, history: resultObj.history + value };
   };
 
   const calculate = (Operation) => {
@@ -78,17 +78,17 @@ export function CalculatorService(
     selectedOperation = '';
     prevOperation = '';
     currentNum = '';
-    setMathHistory('');
-    setResult('');
+    resultObj = { result: '', history: '' };
   };
   const deleteValue = () => {
-    setMathHistory(mathHistory.slice(0, -1));
+    resultObj = { ...resultObj, history: resultObj.history.slice(0, -1) };
     currentNum = currentNum.slice(0, -1);
   };
   const percentage = () => {
-    setMathHistory(mathHistory + '%');
+    resultObj = { ...resultObj, history: resultObj.history + '%' };
     currentNum = currentNum / 100;
   };
 
   pressed(value);
+  return resultObj;
 }
